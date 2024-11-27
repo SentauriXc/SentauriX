@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container product-upload-container">
+    <h2 class="title-left">Subir Nuevo Producto</h2>
+    <div class="upload-content">
+        <form method="post" enctype="multipart/form-data" id="product-upload-form" class="upload-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Título del Producto</label>
+                {{ form.title }}
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción</label>
+                {{ form.description }}
+            </div>
+            <div class="form-group">
+                <label for="price">Precio</label>
+                {{ form.price }}
+            </div>
+            <div class="form-group">
+                <label for="category">Categoría</label>
+                {{ form.category }}
+            </div>
+            <div class="form-group">
+                <label for="condition">Condición</label>
+                {{ form.condition }}
+            </div>
+            <div class="form-group">
+                <label for="image">Imagen del Producto</label>
+                <input type="file" id="image-upload" name="image" accept="image/*" onchange="previewImage(event)">
+            </div>
+            <button type="submit" class="save-btn">Subir Producto</button>
+        </form>
+
+        <!-- Vista previa de la imagen -->
+        <div class="image-preview-container">
+            <h4>Vista Previa de Imagen</h4>
+            <img id="image-preview" src="#" alt="Imagen del Producto" style="display:none;">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<script>
+function previewImage(event) {
+    const image = document.getElementById('image-preview');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.style.display = 'block';
+}
+</script>

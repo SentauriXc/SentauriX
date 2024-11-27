@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Checkout - Sentauri
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Finalizar Compra</h2>
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-12">
+            <div class="card p-4 shadow-sm">
+                <form method="post">
+                    {% csrf_token %}
+                    <h4 class="mb-3">Método de Pago</h4>
+                    <div class="mb-3">
+                        <label for="payment-method" class="form-label">Selecciona el método de pago</label>
+                        <select id="payment-method" name="payment_method" class="form-select" required>
+                            <option value="">Seleccione</option>
+                            <option value="normal">Pago Normal</option>
+                            <option value="card">Tarjeta de Crédito</option>
+                        </select>
+                    </div>
+
+                    <!-- Formulario para tarjeta de crédito -->
+                    <div id="card-payment-form" style="display: none; margin-top: 20px;">
+                        <h5 class="mb-3">Detalles de la Tarjeta</h5>
+                        <div class="mb-3">
+                            <label for="card_holder_name" class="form-label">Nombre en la Tarjeta</label>
+                            <input type="text" name="card_holder_name" id="card_holder_name" class="form-control" placeholder="Nombre completo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="card_number" class="form-label">Número de Tarjeta</label>
+                            <input type="text" name="card_number" id="card_number" class="form-control" placeholder="1234 5678 9012 3456" maxlength="16">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="expiration_month" class="form-label">Mes de Expiración</label>
+                                <select name="expiration_month" id="expiration_month" class="form-select">
+                                    <option value="">Mes</option>
+                                    {% for month in months %}
+                                        <option value="{{ month }}">{{ month }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="expiration_year" class="form-label">Año de Expiración</label>
+                                <select name="expiration_year" id="expiration_year" class="form-select">
+                                    <option value="">Año</option>
+                                    {% for year in years %}
+                                        <option value="{{ year }}">{{ year }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" name="cvv" id="cvv" class="form-control"
+                                   placeholder="123" maxlength="3"
+                                   pattern="\d{3}" required
+                                   title="Debe ingresar 3 números">
+                        </div>
+                    </div>
+
+                    {% if error %}
+                    <div class="alert alert-danger mt-3">
+                        {{ error }}
+                    </div>
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-dark w-100 mt-4">Confirmar Pedido</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mostrar/Ocultar el formulario de tarjeta según el método seleccionado
+    const paymentMethod = document.getElementById('payment-method');
+    const cardPaymentForm = document.getElementById('card-payment-form');
+
+    paymentMethod.addEventListener('change', function () {
+        if (paymentMethod.value === 'card') {
+            cardPaymentForm.style.display = 'block';
+        } else {
+            cardPaymentForm.style.display = 'none';
+        }
+    });
+
+    // Validar que solo se ingresen números en el campo CVV
+    const cvvField = document.getElementById('cvv');
+    cvvField.addEventListener('input', function () {
+        // Permitir solo números y recortar a un máximo de 3 caracteres
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3);
+    });
+</script>
+{% endblock %}

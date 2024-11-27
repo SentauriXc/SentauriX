@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load rest_framework %}
+
+{% block title %}
+Editar Producto - {{ product.title }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Editar Producto</h1>
+    <div class="card shadow-lg p-5" style="max-width: 800px; border-radius: 10px;">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Título -->
+            <div class="mb-4">
+                <label for="title" class="form-label" style="font-weight: 500;">Título del Producto</label>
+                {{ form.title|add_class:"form-control form-control-lg border-0 shadow-sm" }}
+            </div>
+
+            <!-- Descripción -->
+            <div class="mb-4">
+                <label for="description" class="form-label" style="font-weight: 500;">Descripción</label>
+                {{ form.description|add_class:"form-control form-control-lg border-0 shadow-sm" }}
+            </div>
+
+            <!-- Precio -->
+            <div class="mb-4">
+                <label for="price" class="form-label" style="font-weight: 500;">Precio</label>
+                {{ form.price|add_class:"form-control form-control-lg border-0 shadow-sm" }}
+            </div>
+
+            <!-- Imagen -->
+            <div class="mb-4">
+                <label for="image" class="form-label" style="font-weight: 500;">Imagen del Producto</label>
+                {{ form.image|add_class:"form-control form-control-lg border-0 shadow-sm" }}
+                {% if product.image %}
+                    <div class="mt-3">
+                        <img src="{{ product.image.url }}" alt="{{ product.title }}" class="img-fluid shadow-sm" style="border-radius: 10px; max-width: 300px; max-height: 200px;">
+                        <p class="text-muted mt-2">Imagen actual</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Categoría -->
+            <div class="mb-4">
+                <label for="category" class="form-label" style="font-weight: 500;">Categoría</label>
+                {{ form.category|add_class:"form-select form-select-lg shadow-sm" }}
+            </div>
+
+            <!-- Condición -->
+            <div class="mb-4">
+                <label for="condition" class="form-label" style="font-weight: 500;">Condición</label>
+                {{ form.condition|add_class:"form-select form-select-lg shadow-sm" }}
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-start mt-4">
+                <button type="submit" class="btn btn-dark btn-lg me-3" style="border-radius: 5px;">Guardar</button>
+                <a href="{% url 'profile' %}" class="btn btn-outline-secondary btn-lg" style="border-radius: 5px;">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

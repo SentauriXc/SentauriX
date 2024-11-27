@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load template_filters %}
+
+{% block title %}Catálogo - Sentauri{% endblock %}
+
+{% block content %}
+<section class="catalog">
+    <!-- Carrusel -->
+    <div id="mainCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+        <!-- Indicadores -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+
+        <!-- Contenido del Carrusel -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'images/banner2.png' %}" class="d-block w-100" alt="Anuncio 1">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5></h5>
+                    <p></p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/banner2.png' %}" class="d-block w-100" alt="Anuncio 2">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5></h5>
+                    <p></p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/banner2.png' %}" class="d-block w-100" alt="Anuncio 3">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5> </h5>
+                    <p>.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controles -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+        </button>
+    </div>
+
+    <!-- Productos -->
+    <h2>Novedades</h2>
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <img src="{{ product.image.url }}" alt="{{ product.title }}" class="product-image">
+            <div class="product-details">
+                <h3>{{ product.title }}</h3>
+                <p class="price">${{ product.price|format_price }}</p>
+                <p class="details">Talla: {{ product.size }} | Color: {{ product.color }} | Condición: {{ product.condition }}</p>
+                <a href="{% url 'product_detail' product.id %}" class="buy-button">Ver detalles</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

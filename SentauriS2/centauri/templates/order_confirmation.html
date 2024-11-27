@@ -1,0 +1,20 @@
+<!-- centauri/templates/order_confirmation.html -->
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Confirmación de Pedido</h1>
+<p>Gracias por tu compra, {{ user.username }}.</p>
+<p>Tu pedido ha sido registrado con éxito.</p>
+<h3>Detalles del Pedido</h3>
+<ul>
+    <li>ID del Pedido: {{ order.id }}</li>
+    <li>Fecha: {{ order.created_at }}</li>
+    <li>Total: ${{ order.total_amount }}</li>
+</ul>
+<h3>Productos:</h3>
+<ul>
+    {% for item in order.items.all %}
+    <li>{{ item.quantity }} x {{ item.product.title }} - ${{ item.price }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

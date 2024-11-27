@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="auth-background">
+    <!-- Contenedor del formulario -->
+    <div class="auth-container">
+        <h2>Crear una Cuenta</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Registrarse</button>
+        </form>
+        <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
+    </div>
+
+    <!-- Contenedor del logo -->
+    <div class="auth-logo">
+        <img src="{% static 'images/centaurilogo.png' %}" alt="Logo de la página">
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load template_filters %} <!-- Cargamos el filtro personalizado -->
+
+{% block content %}
+<div class="product-detail-container">
+    <!-- Imagen principal del producto con enlace al perfil del vendedor -->
+    <div class="product-image">
+        <a href="{% url 'profile' product.seller.username %}"> <!-- Enlace al perfil del vendedor -->
+            <div class="image-container">
+                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="product-img">
+            </div>
+        </a>
+    </div>
+
+    <!-- Información del producto -->
+    <div class="product-info">
+        <h1 class="product-title">{{ product.title }}</h1>
+        <p class="product-price">${{ product.price|format_price }}</p> <!-- Aplicamos el filtro -->
+
+        <!-- Información del vendedor -->
+        <div class="seller-info">
+            <a href="{% url 'profile' product.seller.username %}"> <!-- Enlace al perfil -->
+                {% if product.seller.profile.profile_picture %}
+                    <img src="{{ product.seller.profile.profile_picture.url }}"
+                         alt="Foto de {{ product.seller.username }}"
+                         class="seller-profile-pic">
+                {% else %}
+                    <img src="{% static 'images/default_profile.jpg' %}"
+                         alt="Foto por defecto"
+                         class="seller-profile-pic">
+                {% endif %}
+            </a>
+            <p class="seller-name">{{ product.seller.username }}</p>
+        </div>
+
+        <!-- Descripción del producto -->
+        <p class="product-description-title">Descripción:</p>
+        <p class="product-description">{{ product.description }}</p>
+
+        <!-- Botón para comprar -->
+        <a href="{% url 'add_to_cart' product.id %}" class="btn-buy">Comprar</a>
+    </div>
+</div>
+
+<!-- Estilos personalizados -->
+<style>
+    .product-detail-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin: 20px auto;
+        max-width: 900px;
+    }
+
+    .image-container {
+        width: 350px; /* Tamaño cuadrado */
+        height: 350px;
+        overflow: hidden; /* Ocultar cualquier parte de la imagen que exceda los límites */
+        display: flex;
+        align-items: center; /* Centrar verticalmente */
+        justify-content: center; /* Centrar horizontalmente */
+        background-color: #f5f5f5; /* Fondo neutro */
+        border-radius: 8px; /* Bordes redondeados */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+    }
+
+    .product-img {
+        width: auto; /* La imagen se adapta proporcionalmente al ancho */
+        height: 100%; /* Llenar verticalmente el contenedor */
+        object-fit: contain; /* Mostrar toda la imagen sin recortarla */
+    }
+
+    .product-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .product-price {
+        font-size: 1.5rem;
+        color: #000; /* Cambiamos el precio a negro */
+        margin-bottom: 20px;
+    }
+
+    .seller-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .seller-profile-pic {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .seller-name {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .product-description-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .product-description {
+        font-size: 1rem;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+    .btn-buy {
+        display: inline-block;
+        background-color: #000;
+        color: #fff;
+        text-decoration: none;
+        text-align: center;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .btn-buy:hover {
+        background-color: #333;
+    }
+</style>
+{% endblock %}
